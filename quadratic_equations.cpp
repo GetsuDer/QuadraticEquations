@@ -73,9 +73,10 @@ in_and_out()
 
 //! \brief This function checks fractional number for proximity to zero
 //! \param [in] d Number to check
+//! \param [in] eps Max difference between values which are understood as same
 //! \return Returns true, if the argument is pretty close to zero
 bool 
-is_zero(double d)
+is_zero(double d, double eps)
 {
-    return fabs(d) < EPS;
+    return fabs(d) < eps;
 }

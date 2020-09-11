@@ -1,44 +1,47 @@
 #include <iostream>
 #include "test_lib.h"
 #include "quadratic_equations.h"
-#include <typeinfo>
 
 int 
 main()
 {
-    double first_root, second_root;
+    double first_root = 0, second_root = 0, a = 0, b = 0, c = 0;
+    int root_number = 0, returned_root_number = 0;
+    double tmp1, tmp2;
 
-    TEST(solve_quadratic_equation(0, 0, 0, first_root, second_root), -1);
-    TEST(solve_quadratic_equation(1, 2, 1, first_root, second_root), 1);
-    TEST(is_zero(first_root + 1), true);
-    
-    TEST(solve_quadratic_equation(1, 0, 0, first_root, second_root), 1);
-    TEST(is_zero(first_root), true);
+    while (scanf("%lf%lf%lf", &a, &b, &c) == ARG_NUM) {
+        if (scanf("%d", &root_number) != 1) {
+            printf("error in test file\n");
+            break;
+        }
+        returned_root_number = solve_quadratic_equation(a, b, c, first_root, second_root);
+        TEST(returned_root_number, root_number);
 
-    TEST(solve_quadratic_equation(0, 1, 0, first_root, second_root), 1);
-    TEST(is_zero(first_root), true);
-
-    TEST(solve_quadratic_equation(0, 1, 2, first_root, second_root), 1);
-    TEST(is_zero(first_root + 2), true);
-    
-    TEST(solve_quadratic_equation(0, 0, 1, first_root, second_root), 0);
-    TEST(solve_quadratic_equation(1, 0, -1, first_root, second_root), 2);
-    TEST(is_zero(first_root - 1), true);
-    TEST(is_zero(second_root + 1), true);
-
-    TEST(solve_quadratic_equation(0.123, 0.456, 0.789, first_root, second_root), 0);
-    
-    TEST(solve_quadratic_equation(12.5, -100, 1, first_root, second_root), 2);
-    TEST(is_zero(second_root - 0.01001253134799), true);
-    TEST(is_zero(first_root - 7.98998746865), true);
-
-    TEST(solve_quadratic_equation(1, 0.0003, 0, first_root, second_root), 2);
-    TEST(is_zero(first_root), true);
-    TEST(is_zero(second_root + 0.0003), true);
-
-    TEST(solve_quadratic_equation(-12, 144, -1, first_root, second_root), 2);
-    TEST(is_zero(second_root - 11.99305153212173), true);
-    TEST(is_zero(first_root - 0.00694846787826601), true);
+        switch (root_number)
+        {
+            case ONE_ROOT:
+                if (scanf("%lf", &tmp1) != ONE_ROOT) {
+                    printf("error in test file\n");
+                }
+                TEST(is_zero(first_root - tmp1, TEST_EPS), true);
+                break;
+            case TWO_ROOTS:
+                if (scanf("%lf%lf", &tmp1, &tmp2) != TWO_ROOTS) {
+                    printf("error in test file\n");
+                }
+                if (tmp1 > tmp2) {
+                    std::swap(tmp1, tmp2);
+                }
+                if (first_root > second_root) {
+                    std::swap(first_root, second_root);
+                }
+                TEST(is_zero(first_root - tmp1, TEST_EPS), true);
+                TEST(is_zero(second_root - tmp2, TEST_EPS), true);
+                break;
+            default:
+                break;
+        }
+    }
 
     TEST_SUMMARY;
     return 0;

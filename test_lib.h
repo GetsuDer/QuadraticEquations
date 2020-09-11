@@ -17,7 +17,6 @@ int failed = 0;
     } else {\
         failed++;\
         std::cerr << COLOR_RED << "[FAILED]" << COLOR_WHITE;\
-        std::cerr << " string " << __LINE__;\
     }\
     std::cerr << " in file " <<  __FILE__ << std::endl;\
 }
@@ -41,3 +40,5 @@ int failed = 0;
 
 //! Change the console text color to white
 #define COLOR_WHITE "\x1b[0m"
+
+constexpr double TEST_EPS = 0.0001;
