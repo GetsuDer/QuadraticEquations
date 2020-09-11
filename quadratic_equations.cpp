@@ -1,4 +1,4 @@
-#include <iostream>
+#include <cstdio>
 #include <cmath>
 
 #include "quadratic_equations.h"
@@ -48,21 +48,23 @@ solve_quadratic_equation(double a, double b, double c, double &first_root, doubl
 void
 in_and_out()
 {
-    double a, b, c;
-    std::cin >> a >> b >> c;
+    double a = 0, b = 0, c = 0;
+    while (scanf("%lf%lf%lf", &a, &b, &c) != ARG_NUM) {
+        printf("Wrong input, try again, please\n");
+    }
 
-    double first_root, second_root;
+    double first_root = 0, second_root = 0;
     int number_of_roots = solve_quadratic_equation(a, b, c, first_root, second_root);
     if (number_of_roots == TWO_ROOTS) {
-        std::cout << TWO_ROOTS << ' ' << first_root << ' ' <<  second_root << std::endl;
+        printf("%d %lf %lf\n", TWO_ROOTS, first_root, second_root);
     } else {
         if (number_of_roots == ONE_ROOT) {
-            std::cout << ONE_ROOT << ' ' << first_root << std::endl;
+            printf("%d %lf\n", ONE_ROOT, first_root);
         } else {
             if (number_of_roots == ZERO_ROOTS) {
-                std::cout << ZERO_ROOTS << std::endl;
+                printf("%d\n", ZERO_ROOTS);
             } else {
-                std::cout << INF_ROOTS << std::endl;
+                printf("%d\n", INF_ROOTS);
             }
         }
     }
