@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall -Wextra 
+CFLAGS = -Wall -Wextra -Wfloat-equal -std=c++14 
 
 .PHONY: all clean test solver
 

@@ -1,10 +1,8 @@
 #include <cstdio>
 #include <cmath>
+#include <cassert>
 
-#ifndef H_QUADRATIC_EQUATIONS
-#define H_QUADRATIC_EQUATIONS
 #include "quadratic_equations.h"
-#endif
 
 //! \brief This functions solves quadratic equation
 //! \param [in] a, b, c Coefficients of the equation a * x ^ 2 + b * x + c = 0
@@ -15,19 +13,21 @@
 int
 solve_quadratic_equation(double a, double b, double c, double &first_root, double &second_root)
 {
+    assert(std::isfinite(a));
+    assert(std::isfinite(a));
+    assert(std::isfinite(a));
+
     if (is_zero(a)) {
-        if (is_zero(b)) {
-            if (is_zero(c)) {
-                return INF_ROOTS;
-            } else {
-                return ZERO_ROOTS;
-            }
-        } else {
-            first_root = - c / b;
-            return ONE_ROOT;
-        }
+        return solve_linear_equation(b, c, first_root);
     } else {
-        double discriminant = b * b - 4 * a * c;
+        double discriminant = discriminant_calculator(a, b, c);
+        
+        if (std::isnan(discriminant)) {
+           return TOO_BIG_NUMBERS;
+        }
+
+        assert(std::isfinite(discriminant));
+
         if (is_zero(discriminant)) {
             first_root = - b / (2 * a);
             return ONE_ROOT;
@@ -36,6 +36,8 @@ solve_quadratic_equation(double a, double b, double c, double &first_root, doubl
                 return ZERO_ROOTS;
             } else {
                 double discriminant_sqrt = sqrt(discriminant);
+
+                assert(std::isfinite(discriminant_sqrt));
                 first_root = (- b + discriminant_sqrt) / (2 * a);
                 second_root = (- b - discriminant_sqrt) / (2 * a);
                 return TWO_ROOTS;
@@ -51,28 +53,66 @@ void
 in_and_out()
 {
     double a = NAN, b = NAN, c = NAN;
-    printf("Write the coefficients of equation ax^2 + bx + c = 0, please\n");
+    printf(HELLO);
 
     while (scanf("%lf%lf%lf", &a, &b, &c) != ARG_NUM) {
-        printf("Wrong input, try again, please\n");
+        printf(WRONG_INPUT);
     }
+    
+    assert(std::isfinite(a));
+    assert(std::isfinite(b));
+    assert(std::isfinite(c));
 
-    double first_root = 0, second_root = 0;
+    double first_root = NAN, second_root = NAN;
     int number_of_roots = solve_quadratic_equation(a, b, c, first_root, second_root);
+    
+    printf(ROOT_NUMBER);
     if (number_of_roots == TWO_ROOTS) {
-        printf("%d %lf %lf\n", TWO_ROOTS, first_root, second_root);
+        
+        assert(std::isfinite(first_root));
+        assert(std::isfinite(second_root));
+        
+        printf("%d\n", TWO_ROOTS);
+
+        printf(ROOTS);
+        printf("%lf %lf\n", first_root, second_root);
     } else {
         if (number_of_roots == ONE_ROOT) {
-            printf("%d %lf\n", ONE_ROOT, first_root);
+            
+            assert(std::isfinite(first_root));
+            assert(std::isnan(second_root));
+            
+            printf("%d\n", ONE_ROOT);
+            printf(ROOTS);
+            printf("%lf\n", first_root);
         } else {
+
+            assert(std::isnan(first_root));
+            assert(std::isnan(second_root));
+            
             if (number_of_roots == ZERO_ROOTS) {
                 printf("%d\n", ZERO_ROOTS);
             } else {
-                printf("%d\n", INF_ROOTS);
+                if (number_of_roots == INF_ROOTS) {
+                    printf(INF);
+                } else {
+                    printf(SORRY);
+                }
             }
         }
     }
     return;
+}
+
+//! \brief This function calculates discriminant of quadratic equation ax^2 + bx + c = 0 by formule b ^ 2 - 4 * a * c
+//! \param [in] a, b, c Coefficients of quadratic equation
+//! \return Return the value of discriminant
+double
+discriminant_calculator(double a, double b, double c)
+{
+    double discr = NAN;
+    discr = b * b - 4 * a * c;
+    return discr;
 }
 
 //! \brief This function checks fractional number for proximity to zero
@@ -82,5 +122,29 @@ in_and_out()
 bool 
 is_zero(double d, double eps)
 {
+
+    assert(std::isfinite(d));
+    assert(std::isfinite(eps));
+
     return fabs(d) < eps;
+}
+
+//! \brief This function solves linear equation ax + b = 0
+//! \param [in] a, b - Coefficients of the equation
+//! \return Returns the number of roots - ONE_ROOT, ZERO_ROOTS or INF_ROOTS
+int
+solve_linear_equation(double a, double b, double &root) 
+{
+    assert(std::isfinite(a));
+    assert(std::isfinite(b));
+
+    if (is_zero(a)) {
+        if (is_zero(b)) {
+            return INF_ROOTS;
+        }
+        return ZERO_ROOTS;
+    }
+    
+    root = - b / a;
+    return ONE_ROOT;
 }
