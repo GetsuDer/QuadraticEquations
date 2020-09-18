@@ -1,11 +1,24 @@
-all: quadratic_equations.o
+CC = g++
+CFLAGS = -Wall -Wextra 
+
+.PHONY: all clean test solver
+
+all: solver
+
+solver: quadratic_equations.o user_part.o
+	$(CC) -o solver quadratic_equations.o user_part.o $(CFLAGS)
 
 test: quadratic_equations.o test_prog.o
-	g++ -o run_tests test_prog.o quadratic_equations.o
-test_prog.o: test_prog.cpp test_lib.h
-	g++ -c test_prog.cpp 
-quadratic_equations.o: quadratic_equations.cpp quadratic_equations.h
-	g++ -c quadratic_equations.cpp
-clean:
-	rm -rf *.o quadratic_equations run_tests
+	$(CC) -o run_tests test_prog.o quadratic_equations.o $(CFLAGS)
 
+user_part.o: user_part.cpp
+	$(CC) -c user_part.cpp $(CFLAGS)
+
+test_prog.o: test_prog.cpp test_lib.h
+	$(CC) -c test_prog.cpp $(CFLAGS)
+
+quadratic_equations.o: quadratic_equations.cpp quadratic_equations.h
+	$(CC) -c quadratic_equations.cpp $(CFLAGS)
+
+clean:
+	rm -rf *.o run_tests solver 

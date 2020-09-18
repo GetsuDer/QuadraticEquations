@@ -1,6 +1,14 @@
 #include <iostream>
+
+#ifndef H_TEST_LIB
+#define H_TEST_LIB
 #include "test_lib.h"
+#endif
+
+#ifndef H_QUADRATIC_EQUATIONS
+#define H_QUADRATIC_EQUATIONS
 #include "quadratic_equations.h"
+#endif
 
 int 
 main()

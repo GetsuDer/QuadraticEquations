@@ -1,8 +1,10 @@
 #include <cstdio>
 #include <cmath>
 
+#ifndef H_QUADRATIC_EQUATIONS
+#define H_QUADRATIC_EQUATIONS
 #include "quadratic_equations.h"
-
+#endif
 
 //! \brief This functions solves quadratic equation
 //! \param [in] a, b, c Coefficients of the equation a * x ^ 2 + b * x + c = 0
@@ -48,7 +50,9 @@ solve_quadratic_equation(double a, double b, double c, double &first_root, doubl
 void
 in_and_out()
 {
-    double a = 0, b = 0, c = 0;
+    double a = NAN, b = NAN, c = NAN;
+    printf("Write the coefficients of equation ax^2 + bx + c = 0, please\n");
+
     while (scanf("%lf%lf%lf", &a, &b, &c) != ARG_NUM) {
         printf("Wrong input, try again, please\n");
     }
