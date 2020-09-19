@@ -3,7 +3,7 @@
 #include <cmath>
 
 #include "test_lib.h"
-#include "quadratic_equations.h"
+#include "../Include/quadratic_equations.h"
 
 void
 test_solve_quadratic_equation()

@@ -16,12 +16,17 @@ bool test_state = true;
 //! This should be written at the beginning of the each test
 #define TEST_BEGIN \
     test_state = true;\
-    number_of_tests++;
+    number_of_tests++;\
+    std::cerr << "Test # " << number_of_tests << std::endl;
 
 //! This macro compares the arguments and updates the test state
 #define TEST(code, result) \
+    std::cerr << "checking " << #code << " == " << #result << std::endl;\
     if (code != result) {\
         test_state = false;\
+        std::cerr << COLOR_RED << __FILE__ << ' ' << __LINE__ << COLOR_WHITE << std::endl;\
+    } else {\
+        std::cerr << COLOR_GREEN << "OK" << COLOR_WHITE << std::endl;\
     }
 
 //! This macro means the end of the current test
@@ -32,7 +37,7 @@ bool test_state = true;
         failed++;\
         std::cerr << COLOR_RED << "[FAILED]" << COLOR_WHITE;\
     }\
-    std::cerr << "Test # " <<  number_of_tests  << std::endl;\
+    std::cerr << "Test # " <<  number_of_tests  << std::endl << std::endl;
 
 
 //! This macro can be started to see the results of previous tests
@@ -46,7 +51,8 @@ bool test_state = true;
     } else {\
         std::cerr << COLOR_GREEN << "testing successfull" << COLOR_WHITE << std::endl;\
     }\
-}\
+}
+
 //! Change the console text color to green
 #define COLOR_GREEN "\x1b[32m"
 

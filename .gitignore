@@ -1,3 +1,4 @@
 *.o
 solver
 run_tests
+

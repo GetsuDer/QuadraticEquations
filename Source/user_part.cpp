@@ -1,4 +1,4 @@
-#include "quadratic_equations.h"
+#include "../Include/quadratic_equations.h"
 
 int
 main()

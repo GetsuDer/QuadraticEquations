@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cassert>
 
-#include "quadratic_equations.h"
+#include "../Include/quadratic_equations.h"
 
 //! \brief This functions solves quadratic equation
 //! \param [in] a, b, c Coefficients of the equation a * x ^ 2 + b * x + c = 0
@@ -35,6 +35,7 @@ solve_quadratic_equation(double a, double b, double c, double &first_root, doubl
             if (discriminant < -EPS) {
                 return ZERO_ROOTS;
             } else {
+                assert(discriminant > EPS);
                 double discriminant_sqrt = sqrt(discriminant);
 
                 assert(std::isfinite(discriminant_sqrt));
@@ -55,13 +56,15 @@ in_and_out()
     double a = NAN, b = NAN, c = NAN;
     printf(HELLO);
 
-    while (scanf("%lf%lf%lf", &a, &b, &c) != ARG_NUM) {
+    if (scanf("%lf %lf %lf", &a, &b, &c) != ARG_NUM) {
         printf(WRONG_INPUT);
+        return;
     }
-    
-    assert(std::isfinite(a));
-    assert(std::isfinite(b));
-    assert(std::isfinite(c));
+
+    if (!std::isfinite(a) || !std::isfinite(b) || !std::isfinite(c)) {
+        printf(WRONG_INPUT);
+        return;
+    }
 
     double first_root = NAN, second_root = NAN;
     int number_of_roots = solve_quadratic_equation(a, b, c, first_root, second_root);
@@ -110,9 +113,11 @@ in_and_out()
 double
 discriminant_calculator(double a, double b, double c)
 {
-    double discr = NAN;
-    discr = b * b - 4 * a * c;
-    return discr;
+    assert(std::isfinite(a));
+    assert(std::isfinite(b));
+    assert(std::isfinite(c));
+
+    return b * b - 4 * a * c;
 }
 
 //! \brief This function checks fractional number for proximity to zero
